@@ -10,7 +10,7 @@ const Tabs = createBottomTabNavigator();
 
 export default function Home() {
   return (
-    <Tabs.Navigator screenOptions={styles.container}>
+    <Tabs.Navigator screenOptions={styles.container} component={<View style={styles.line}></View>}>
       <Tabs.Screen
         options={{
           tabBarIcon: ({ focused, color, size }) => {
@@ -58,7 +58,7 @@ export default function Home() {
         }}
         name="ProfileScreen"
         component={ProfileScreen}
-      />
+          />
     </Tabs.Navigator>
   );
 }
@@ -90,8 +90,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+ 
+    line: {
+       borderWidth: 0.5,
+        backgroundColor: '#212121',
+        borderRadius: 100,
+        width: 134,
+},
 
-  container: {
+    container: {
     headerStyle: {
       height: 83,
       borderBottomWidth: 1,
