@@ -9,89 +9,59 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
-  Image,
 } from "react-native";
 import { useState, useEffect } from "react";
 
-export default function RegistrationScreen() {
+export default function LoginScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [login, setLogin] = useState("");
+  // const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [image, setImage] = useState(null);
-
-  const loginHandler = (text) => {
-    setLogin(text);
-  };
 
   const emailHandler = (text) => {
-    setEmail(text.trim());
+    setEmail(text);
   };
-
   const passwordHandler = (text) => {
-    setPassword(text.trim());
+    setPassword(text);
   };
 
-  const handalSubmit = () => {
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+  };
+
+  const handalSubmit = (e) => {
+    e.preventDefault();
     const data = {
-      login,
       email,
       password,
     };
     console.log(data);
-    setLogin("");
-    setEmail("");
-    setPassword("");
-    Keyboard.dismiss();
-  };
 
+    Keyboard.dismiss();
+    resetForm();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <ImageBackground
           style={styles.image}
-          source={require("../assets/image/PhotoBG.jpg")}
+          source={require("../../assets/image/PhotoBG.jpg")}
         >
           <KeyboardAvoidingView behavior={Platform.OS == "ios" && "padding"}>
             <View
               style={{
                 ...styles.form,
-                // marginBottom:
-                //   isShowKeyboard && Platform.OS == "android" ? 32 : 110,
+                marginBottom:
+                  isShowKeyboard && Platform.OS == "android" ? 32 : 110,
               }}
             >
-              <View style={styles.containerFoto}>
-                <Image style={styles.foto} source={image} />
-                <TouchableOpacity>
-                  {image ? (
-                    <Image
-                      style={styles.deleteBtn}
-                      source={require("../assets/image/delete.png")}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.addBtn}
-                      source={require("../assets/image/add.png")}
-                    />
-                  )}
-                </TouchableOpacity>
-              </View>
-
-              <Text style={styles.title}>Register</Text>
               <TextInput
-                value={login}
                 style={styles.containerInput}
-                placeholder="login"
-                onChangeText={loginHandler}
-              ></TextInput>
-
-              <TextInput
-                style={{ ...styles.containerInput, marginTop: 16 }}
                 placeholder="email"
-                value={email}
                 onChangeText={emailHandler}
+                value={email}
                 onFocus={() => {
                   setIsShowKeyboard(true);
                 }}
@@ -116,7 +86,10 @@ export default function RegistrationScreen() {
                 <Text style={styles.btnText}>REGISTER</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.btnSignIn}>
+              <TouchableOpacity
+                style={styles.btnSignIn}
+                onPress={() => navigation.navigate("Registration")}
+              >
                 <Text style={styles.btnSignInText}>
                   Already have an account? Sign in
                 </Text>
@@ -132,6 +105,7 @@ export default function RegistrationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
   },
 
   image: {
@@ -147,53 +121,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderColor: "#E8E8E8",
     borderRadius: 8,
+    fontFamily: "Roboto-Regular",
   },
 
   form: {
-    backgroundColor: "#FFFFFF",
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingBottom: 78,
-    paddingTop: 92,
-    borderTopRightRadius: 25,
-    borderTopLeftRadius: 25,
-  },
-
-  containerFoto: {
-    top: -60,
-    position: "relative",
-    alignSelf: "center",
-    marginTop: -92,
-    marginBottom: 0,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 16,
-    width: 120,
-    height: 120,
-  },
-
-  addBtn: {
-    position: "absolute",
-    bottom: -106,
-    right: -12,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    backgroundColor: "#ffffff",
-  },
-
-  deleteBtn: {
-    position: "absolute",
-    bottom: -81,
-    right: -12,
-  },
-  title: {
-    color: "#212121",
-    fontSize: 30,
-    lineHeight: 35,
-    marginBottom: 33,
-    fontFamily: "Roboto-Regular",
-    textAlign: "center",
+    marginHorizontal: 16,
+    // justifyContent: "flex-start",
+    // marginBottom: 32,
   },
 
   btn: {
@@ -209,6 +143,7 @@ const styles = StyleSheet.create({
   btnText: {
     color: "#FFFFFF",
     fontSize: 16,
+    fontFamily: "Roboto-Regular",
   },
 
   btnSignIn: {
