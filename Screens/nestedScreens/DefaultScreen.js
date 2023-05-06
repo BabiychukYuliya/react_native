@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { Button, TouchableOpacity } from "react-native";
 import { Text, View, StyleSheet, FlatList, Image } from "react-native";
 
-export default function DefaultScreenPost({ route }) {
+export default function DefaultScreenPost({ route, navigation }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -19,10 +20,12 @@ export default function DefaultScreenPost({ route }) {
         renderItem={({ item }) => (
           <View style={styles.boxPhoto}>
                 <Image source={{ uri: item.photo }} style={styles.photo}></Image>
-                <Text>{item.namePhoto }</Text>
+                <Text>{item.namePost }</Text>
           </View>
         )}
           />
+          <Button title='Map' onPress={() => navigation.navigate("Map")}></Button>
+          <TouchableOpacity onPress={() => navigation.navigate("Comments")}></TouchableOpacity>
     </View>
   );
 }

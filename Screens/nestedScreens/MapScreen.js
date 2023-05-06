@@ -1,4 +1,5 @@
-import { ScrollView, Text,View, StyleSheet } from "react-native";
+import { ScrollView, Text, View, StyleSheet } from "react-native";
+import MapView, {MapMarker} from 'react-native-maps';
 
 
 
@@ -6,10 +7,14 @@ export default function MapScreen() {
 
   return(
     <View style={styles.container}>
-
-    <ScrollView>
-      <Text>MapScreen</Text>
-    </ScrollView>
+      <MapView style={{flex: 1}} initialRegion={{
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+          }}>
+              <MapMarker title='You are here'  coordinate={{ latitude: 37.78825, longitude: -122.4324}} />
+  </MapView>
     </View>
   )
   
@@ -18,8 +23,5 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff'
   }
 })

@@ -11,6 +11,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 export default function CreatePostScreen({ navigation }) {
   const [refCamera, setRefCamera] = useState(null);
@@ -18,6 +19,7 @@ export default function CreatePostScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [namePost, setNamePost] = useState("");
+  const [locationPost, setLocationPost] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -72,15 +74,26 @@ export default function CreatePostScreen({ navigation }) {
       </Text>
 
       <TextInput
-              value={namePost}
-              onChangeText={(value) => setNamePost(value)}
-              style={styles.input}
-              placeholder="Name..."
-            />
+        value={namePost}
+        onChangeText={(value) => setNamePost(value)}
+        style={styles.inputName}
+        placeholder="Name..."
+      />
+      <View style={styles.boxLocation}>
+        <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" style={{ marginBottom: 16 }} />
+        <TextInput
+          
+        value={locationPost}
+        onChangeText={(value) => setLocationPost(value)}
+        placeholder="Location..."
+      />
+      </View>
 
-      <TouchableOpacity style={styles.btnPublish} onPress={sendPhoto}>
-        <Text style={styles.btnPublishText}>Publish</Text>
+
+      <TouchableOpacity style={{...styles.btnPublish, backgroundColor:photo !== null && namePost ? "#FF6C00" : "#F6F6F6" }} onPress={sendPhoto}>
+        <Text style={{...styles.btnPublishText, color: photo !== null && namePost !== "" ? "#fff" : "#BDBDBD" }}>Publish</Text>
       </TouchableOpacity>
+      
     </View>
   );
 }
@@ -137,7 +150,6 @@ const styles = StyleSheet.create({
   btnPublishText: {
     fontSize: 16,
     fontFamily: "Roboto-Regular",
-    color: "#FFFFFF",
   },
 
   download: {
@@ -148,12 +160,26 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 
-  input: {
-    borderWidth: 1,
-    borderColor: '#E8E8E8',
-    height: 48,
+  inputName: {
+    borderBottomWidth: 1,
+    borderColor: "#E8E8E8",
+    height: 38,
     width: 343,
-    alignItems: 'center',
-    justifyContent: 'center'
+    marginHorizontal: 16,
+    color: "#BDBDBD",
+  },
+
+  boxLocation: {
+    display: "flex",
+    flexDirection: "row",
+    height: 40,
+    width: 343,
+    borderBottomWidth: 1,
+    borderColor: '#E8E8E8',
+    marginHorizontal: 16,
+    marginBottom: 16,
+    width: "100%",
+    // alignContent: 'center'
+
   }
 });
