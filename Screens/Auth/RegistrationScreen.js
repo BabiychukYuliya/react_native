@@ -13,6 +13,9 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { authSignUpUser } from "../../redux/auth/authOperations";
+
 export default function RegistrationScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [login, setLogin] = useState("");
@@ -20,6 +23,8 @@ export default function RegistrationScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [image, setImage] = useState(null);
+
+  const dispatch = useDispatch();
 
   const loginHandler = (text) => {
     setLogin(text);
@@ -40,6 +45,7 @@ export default function RegistrationScreen({ navigation }) {
       password,
     };
     console.log(data);
+    dispatch(authSignUpUser(data));
     setLogin("");
     setEmail("");
     setPassword("");

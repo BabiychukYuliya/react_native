@@ -1,12 +1,15 @@
 import { useState, useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { NavigationContainer } from "@react-navigation/native";
-import { useRoute } from "./router";
+import { store } from "./redux/store";
+import Main from "./components/Main";
+import { Provider } from "react-redux";
+
+
 
 export default function App() {
-  const [statusLog, setStatusLog] = useState(false);
-  const routing = useRoute(true);
+
+  
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("../myNewProject/assets/font/Roboto-Regular.ttf"),
   });
@@ -21,5 +24,10 @@ export default function App() {
     return null;
   }
 
-  return <NavigationContainer>{routing}</NavigationContainer>;
+  return (
+    <Provider store={store}>
+  <Main/>
+    </Provider>
+  
+  )
 }

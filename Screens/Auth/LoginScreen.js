@@ -12,11 +12,17 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 
+import { useDispatch } from "react-redux";
+
+import {authSignInUser} from '../../redux/auth/authOperations'
+
 export default function LoginScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   // const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
 
   const emailHandler = (text) => {
     setEmail(text);
@@ -37,7 +43,7 @@ export default function LoginScreen({ navigation }) {
       password,
     };
     console.log(data);
-
+dispatch(authSignInUser(data))
     Keyboard.dismiss();
     resetForm();
   };
