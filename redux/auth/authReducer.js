@@ -15,13 +15,15 @@ export const authSlice = createSlice({
       ...state,
       userId: payload.userId,
             login: payload.login,
-            email: payload.email,
-            stateChange: true,
+      email: payload.email,
+            
     }),
 
     authStateChange: (state, { payload }) => ({
       ...state,
       stateChange: payload.stateChange,
-    })
+    }),
+
+    authSignOut: () => state,
   },
 });

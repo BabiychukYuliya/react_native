@@ -5,10 +5,16 @@ import ProfileScreen from "./ProfileScreen";
 import { Feather } from "@expo/vector-icons";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { auth} from '../../firebase/config';
+import { authSignOutUser } from "../../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
 
 const Tabs = createBottomTabNavigator();
 
 export default function Home() {
+  const dispatch = useDispatch();
+  const signOut = () => { dispatch(authSignOutUser()) };
+
   return (
     <Tabs.Navigator screenOptions={styles.container} component={<View style={styles.line}></View>}>
       <Tabs.Screen
@@ -26,7 +32,10 @@ export default function Home() {
           },
           headerTitle: { color: "#212121" },
 
-          headerRight: () => <Feather name="log-out" size={24} color="black" />,
+          headerRight: () =>
+            <TouchableOpacity onPress={signOut}>
+              <Feather name="log-out" size={24} color="black" />
+              </TouchableOpacity>,
         }}
         name="Posts"
         component={PostScreen}

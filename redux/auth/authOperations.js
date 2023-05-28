@@ -21,7 +21,7 @@ export const authSignUpUser =
       });
       dispatch(
         authSlice.actions.updateUserProfile({
-          useId: user.uid,
+          userId: user.uid,
           login: user.displayName,
           email: user.email,
         })
@@ -36,16 +36,28 @@ export const authSignInUser =
   ({ email, password }) =>
   async (dispatch, setState) => {
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log(user);
+      await signInWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+
+      await updateProfile(user, {email: user.email});
+      dispatch(
+        authSlice.actions.updateUserProfile({
+          userId: user.uid,
+          login: user.displayName,
+          email: user.email,
+        })
+      );
+      dispatch(authSlice.actions.authStateChange({ stateChange: true }));
     } catch (error) {
       console.log("error", error);
       console.log("error.messag", error.message);
     }
-  };
+    };
+  
+
 export const authSignOutUser = () => async (dispatch, setState) => {
   await auth.signOut();
-  dispatch(authSlice.actions.authStateChange({ stateChange: false }));
+  dispatch(authSlice.actions.authSignOut());
 };
 
 export const authStateChangeUser = () => async (dispatch, setState) => {
