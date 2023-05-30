@@ -79,7 +79,7 @@ export default function CreatePostScreen({ navigation }) {
   const sendPhoto = () => {
 
           uploadPostToServer();
-      navigation.navigate("DefaultScreen", { photo });
+      navigation.navigate("DefaultScreen");
    
 
   };

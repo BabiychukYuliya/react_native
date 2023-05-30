@@ -1,19 +1,22 @@
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import MapView, {MapMarker} from 'react-native-maps';
+import { View, StyleSheet } from "react-native";
+import MapView, { MapMarker } from 'react-native-maps';
+import React from "react";
 
 
 
-export default function MapScreen() {
+const MapScreen = ({route})  => {
+  console.log("route", route);
+  const loc = route.params.location;
 
   return(
     <View style={styles.container}>
       <MapView style={{flex: 1}} initialRegion={{
-    latitude: 37.78825,
-    longitude: -122.4324,
+    latitude: loc.latitude,
+    longitude: loc.longitude,
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
           }}>
-              <MapMarker title='You are here'  coordinate={{ latitude: 37.78825, longitude: -122.4324}} />
+              <MapMarker title='You are here'  coordinate={{ latitude:loc.latitude, longitude:loc.longitude}} />
   </MapView>
     </View>
   )
@@ -25,3 +28,5 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 })
+
+export default MapScreen;
