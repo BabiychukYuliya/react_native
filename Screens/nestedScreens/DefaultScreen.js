@@ -36,7 +36,7 @@ export default function DefaultScreenPost({ route, navigation }) {
                 marginTop: 8,
               }}
             >
-              <TouchableOpacity onPress={() => navigation.navigate("Comments")}>
+              <TouchableOpacity onPress={() => navigation.navigate("Comments", {postId: item.id})}>
                 <EvilIcons name="comment" size={24} color="#bdbdbd" />
               </TouchableOpacity>
 
