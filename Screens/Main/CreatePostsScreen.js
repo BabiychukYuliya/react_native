@@ -79,7 +79,8 @@ export default function CreatePostScreen({ navigation }) {
   const sendPhoto = () => {
 
           uploadPostToServer();
-      navigation.navigate("DefaultScreen");
+    navigation.navigate("DefaultScreen", {photo});
+    setLocationPost(locationPost);
    
 
   };
@@ -106,7 +107,7 @@ userId,
     await uploadBytesResumable(storageRef, file);
 
     const getImageUrl = await getDownloadURL(storageRef);
-    console.log(getImageUrl);
+    console.log("getImageUrl", getImageUrl);
 
     return getImageUrl;
   }
@@ -143,8 +144,8 @@ userId,
       />
       <View style={styles.boxLocation}>
         <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" style={{ marginBottom: 16 }} />
+
         <TextInput
-          
         value={locationPost}
         onChangeText={(value) => setLocationPost(value)}
         placeholder="Location..."

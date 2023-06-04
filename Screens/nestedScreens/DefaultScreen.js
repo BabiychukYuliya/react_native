@@ -1,17 +1,22 @@
+import React from "react";
 import { useEffect, useState } from "react";
-import { Button, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Text, View, StyleSheet, FlatList, Image } from "react-native";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { EvilIcons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+
 
 export default function DefaultScreenPost({ route, navigation }) {
   const [posts, setPosts] = useState([]);
+  const userName = useSelector((state) => state);
+
+  console.log("Post", posts);
 
   const getAllPosts = async () => {
     await onSnapshot(collection(db, "posts"), (snapshot) => {
       setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      
     });
   };
 
@@ -21,12 +26,21 @@ export default function DefaultScreenPost({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.containerProfile}>
+        <Image source={require("../../assets/image/Natalia.jpg")} />
+        <View style={styles.boxUserInfo}>
+          <Text>{userName.auth.login}</Text>
+
+          <Text> {userName.auth.email} </Text>
+        </View>
+      </View>
+
       <FlatList
         data={posts}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.boxPhoto}>
-            <Image source={{ uri: item.photo }} style={styles.photo}></Image>
+            <Image source={{ uri: item.image }} style={styles.photo}></Image>
             <Text>{item.namePost}</Text>
 
             <View
@@ -36,17 +50,35 @@ export default function DefaultScreenPost({ route, navigation }) {
                 marginTop: 8,
               }}
             >
-              <TouchableOpacity onPress={() => navigation.navigate("Comments", {postId: item.id})}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Comments", { postId: item.id })
+                }
+              >
                 <EvilIcons name="comment" size={24} color="#bdbdbd" />
               </TouchableOpacity>
 
               <TouchableOpacity
                 title="Map"
                 onPress={() =>
-                  navigation.navigate("Map", { location: item.location })
+                  navigation.navigate("Map", { location: item.locationPost })
                 }
               >
+                {/* {item.locationPost ? (
+                  <View style={{ borderBottomWidth: 1 }}>
+                    <EvilIcons name="location" size={30} color="#BDBDBD" />
+                    <Text>{item.locationPost}</Text>
+                  </View>
+                ) : (
+                  <View style={{ borderBottomWidth: 1 }}>
+                    <EvilIcons name="location" size={30} color="#BDBDBD" />
+                    <Text>Location</Text>
+                  </View>
+                )} */}
+<View style={styles.locationBox}>
                 <EvilIcons name="location" size={30} color="#BDBDBD" />
+                  <Text>Location</Text>
+                  </View>
               </TouchableOpacity>
             </View>
           </View>
@@ -72,5 +104,22 @@ const styles = StyleSheet.create({
   boxPhoto: {
     marginBottom: 8,
     alignItems: "center",
+    marginRight: 16,
+    marginBottom: 32
   },
+
+  containerProfile: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  boxUserInfo: {
+    display: "flex",
+  },
+
+  locationBox: {
+    display: "flex",
+    flexDirection: "row",
+  }
 });
