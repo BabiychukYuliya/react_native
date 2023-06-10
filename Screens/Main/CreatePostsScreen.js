@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { collection, addDoc } from "firebase/firestore";
 
 
+
 export default function CreatePostScreen({ navigation }) {
   const [refCamera, setRefCamera] = useState(null);
   const [photo, setPhoto] = useState("");
@@ -93,7 +94,8 @@ export default function CreatePostScreen({ navigation }) {
       namePost,
       locationPost,
 userId,
-      login
+      login, 
+      commentCount,
     });
   }
   

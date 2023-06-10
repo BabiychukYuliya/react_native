@@ -8,11 +8,15 @@ import { EvilIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
 
+
 export default function DefaultScreenPost({ route, navigation }) {
   const [posts, setPosts] = useState([]);
   const userName = useSelector((state) => state);
+  // const postId = route.params.postId;
+    const [like, setLike] = useState([]);
+  // const [commentCounter, setCommentCounter] = useState(0);
 
-  console.log("Post", posts);
+  // console.log("Post", posts);
 
   const getAllPosts = async () => {
     await onSnapshot(collection(db, "posts"), (snapshot) => {
@@ -24,12 +28,34 @@ export default function DefaultScreenPost({ route, navigation }) {
     getAllPosts();
   }, []);
 
+    const getAllLikes = async () => {
+    const postsCollection = await collection(db, "posts");
+    const newPostRef = await doc(postsCollection, postId);
+    const newCollection = await collection(newPostRef, "likes");
+    const snapshot = await getCountFromServer(newCollection);
+
+    const likeCounter = snapshot.data().count;
+    console.log('likeCounter: ', likeCounter);
+
+     await onSnapshot(newCollection, (snapshot) => {
+       setAllLikes(snapshot.docs.map((doc) => doc.data()));
+     });
+    return (likeCounter);
+  };
+
+
+  useEffect(() => {
+    getAllLikes();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.containerProfile}>
+        <View style={{marginHorizontal: 16, marginBottom: 32}}>
         <Image source={require("../../assets/image/Natalia.jpg")} />
-        <View style={styles.boxUserInfo}>
-          <Text>{userName.auth.login}</Text>
+        </View>
+          <View style={styles.boxUserInfo}>
+          <Text style={{fontWeight:"700"}}>{userName.auth.login}</Text>
 
           <Text> {userName.auth.email} </Text>
         </View>
@@ -56,8 +82,10 @@ export default function DefaultScreenPost({ route, navigation }) {
                 }
               >
                 <EvilIcons name="comment" size={24} color="#bdbdbd" />
+                <Text>{item.commentCounter}</Text>
               </TouchableOpacity>
-
+              
+              
               <TouchableOpacity
                 title="Map"
                 onPress={() =>
@@ -111,11 +139,13 @@ const styles = StyleSheet.create({
   containerProfile: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+    // alignItems: "center",
+    justifyContent: "flex-start",
   },
 
   boxUserInfo: {
     display: "flex",
+    marginTop: 32
   },
 
   locationBox: {

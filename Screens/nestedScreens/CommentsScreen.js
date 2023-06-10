@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { db } from "../../firebase/config";
 import { useSelector } from "react-redux";
-import { collection, addDoc, doc, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, doc, onSnapshot, getCountFromServer } from "firebase/firestore";
 import { useEffect } from "react";
 
 const CommentsScreen = ({ route }) => {
@@ -30,19 +30,29 @@ const CommentsScreen = ({ route }) => {
     await setComment("");
   };
 
+
   const getAllComments = async () => {
     const postsCollection = await collection(db, "posts");
     const newPostRef = await doc(postsCollection, postId);
     const newCollection = await collection(newPostRef, "comments");
+    const snapshot = await getCountFromServer(newCollection);
 
-    await onSnapshot(newCollection, (snapshot) => {
-      setAllComments(snapshot.docs.map((doc) => doc.data()));
-    });
+    const commentCounter = snapshot.data().count;
+    console.log('commentCounter: ', commentCounter);
+
+     await onSnapshot(newCollection, (snapshot) => {
+       setAllComments(snapshot.docs.map((doc) => doc.data()));
+     });
+    return (commentCounter);
   };
+
 
   useEffect(() => {
     getAllComments();
   }, []);
+
+
+
 
   return (
     <View style={styles.container}>
@@ -51,7 +61,8 @@ const CommentsScreen = ({ route }) => {
         data={allComments}
           renderItem={({ item }) => (
           <View style={styles.input}>
-          <Text>{ item.comment}</Text>
+              <Text>{item.comment}</Text>
+        
               </View>
         )}
         keyExtractor={item => item.id}

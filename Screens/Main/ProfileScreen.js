@@ -3,28 +3,38 @@ import { useEffect, useState } from "react";
 import { useSelector} from "react-redux";
 import { db } from "../../firebase/config";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { EvilIcons } from "@expo/vector-icons";
+import { EvilIcons, Feather } from "@expo/vector-icons";
 
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation, route}) => {
   const { userId } = useSelector((state) => state.auth);
-
   const [userPosts, setUserPosts] = useState([]);
 
-  const getUserPosts = async () => {
+
+
+  useEffect(() => {
+    getUserPhoto();
+  }, []);
+
+  const getUserPhoto = async () => {
     const q = await query(
       collection(db, "posts"),
       where("userId", "==", userId)
     );
 
     await onSnapshot(q, (snapshot) => {
-      setUserPosts(snapshot.docs.map((doc) => ({ ...doc.data() })));
+      setUserPosts(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
     });
   };
 
-  useEffect(() => {
-    getUserPosts();
-  }, []);
+
+
+
 
   return (
     <View style={styles.container}>
@@ -63,7 +73,16 @@ const ProfileScreen = () => {
                   navigation.navigate("Comments", { postId: item.id })
                 }
               >
-                <EvilIcons name="comment" size={24} color="#bdbdbd" />
+                <EvilIcons name="like" size={24} color="#bdbdbd" />
+              </TouchableOpacity>
+
+                            <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Likes", { postId: item.id })
+                }
+              >
+                <Feather name="thumbs-up" size={24} color="#bdbdbd" />
+                <Text>item.likeCounter</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -100,18 +119,19 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     alignItems: "center",
   },
+      photo: {
+    width: 343,
+    height: 240,
+    borderRadius: 8,
+  },
     
       locationBox: {
     display: "flex",
     flexDirection: "row",
   },
       
-        containerFoto: {
-    top: -60,
-    position: "relative",
-    alignSelf: "center",
-    marginTop: -92,
-    marginBottom: 0,
+  containerFoto: {
+          position: "relative",
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
     width: 120,
