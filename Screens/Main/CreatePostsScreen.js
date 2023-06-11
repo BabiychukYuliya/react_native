@@ -93,9 +93,8 @@ export default function CreatePostScreen({ navigation }) {
       image,
       namePost,
       locationPost,
-userId,
+      userId,
       login, 
-      commentCount,
     });
   }
   

@@ -28,25 +28,21 @@ export default function DefaultScreenPost({ route, navigation }) {
     getAllPosts();
   }, []);
 
-    const getAllLikes = async () => {
-    const postsCollection = await collection(db, "posts");
-    const newPostRef = await doc(postsCollection, postId);
-    const newCollection = await collection(newPostRef, "likes");
-    const snapshot = await getCountFromServer(newCollection);
-
-    const likeCounter = snapshot.data().count;
-    console.log('likeCounter: ', likeCounter);
-
-     await onSnapshot(newCollection, (snapshot) => {
-       setAllLikes(snapshot.docs.map((doc) => doc.data()));
-     });
-    return (likeCounter);
-  };
 
 
-  useEffect(() => {
-    getAllLikes();
-  }, []);
+  //   const likeCounter = snapshot.data().count;
+  //   console.log('likeCounter: ', likeCounter);
+
+  //    await onSnapshot(newCollection, (snapshot) => {
+  //      setAllLikes(snapshot.docs.map((doc) => doc.data()));
+  //    });
+  //   return (likeCounter);
+  // };
+
+
+  // useEffect(() => {
+  //   getAllLikes();
+  // }, []);
 
   return (
     <View style={styles.container}>
