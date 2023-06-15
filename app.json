@@ -14,9 +14,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-      "jsEngine": "hermes",
+    "jsEngine": "hermes",
     "ios": {
-       "jsEngine": "jsc",
+      "jsEngine": "jsc",
       "supportsTablet": true
     },
     "android": {
@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.yulia_babiychuk.myNewProject"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dd95add3-a83a-43fb-9324-3a5067ffda7a"
+      }
     }
   }
 }
